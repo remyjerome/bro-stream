@@ -9,6 +9,9 @@ const fillProgress = document.querySelector('.progress__filled');
 let play = false;
 let progress;
 let fillBar = 0;
+video.preload = "auto";
+const duration = String(video.duration);
+document.querySelector('[name="currentTime"]').setAttribute('max', `${duration}`);
 
 videoProgress();
 
@@ -37,16 +40,8 @@ function forwardVid() {
     videoProgress();
 }
 
-function speedRate() {
-    video.playbackRate = this.value;
-}
-
-function setVolume() {
-    video.volume = this.value;
-}
-
 function videoProgress() {
-    fillBar = video.currentTime*100/video.duration;
+    fillBar = video.currentTime === 0 ? video.currentTime : video.currentTime*100/video.duration;
     fillProgress.style.flexBasis=`${fillBar}`+"%";
     if (fillBar == 100) {
         play = false;
@@ -59,19 +54,18 @@ function stopProgress() {
     clearInterval(progress);
 }
 
+function handleInputs() {
+    console.log(this.name, this.value);
+    video[this.name] = this.value;
+}
+
 playButton.addEventListener('click', playPause);
 backwardButton.addEventListener('click', backwardVid);
 forwardButton.addEventListener('click', forwardVid);
-speedBar.addEventListener('change', speedRate);
-speedBar.addEventListener('mousemove', speedRate);
-volumeBar.addEventListener('change', setVolume);
-volumeBar.addEventListener('mousemove', setVolume);
+inputs.forEach(input => input.addEventListener('change', handleInputs));
+inputs.forEach(input => input.addEventListener('mousemove', handleInputs));
 video.addEventListener('click', playPause);
 
 
-// function handleInputs() {
-//     video.setProperty`${this.name}`= this.value);
-// }
 
-// inputs.forEach(input => input.addEventListener('change', handleInputs));
-// inputs.forEach(input => input.addEventListener('mousemove', handleInputs));
+
