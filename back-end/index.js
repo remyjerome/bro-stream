@@ -2,7 +2,7 @@ import express from 'express'
 import {extname, resolve} from 'path'
 import {createReadStream, statSync} from 'fs'
 const app = express()
-const port = 3000
+const port = 4000
 
 
 app.get('/', (req, res) => {
